@@ -1,0 +1,5 @@
+#AUTOMAKE_OPTIONS=foreign
+
+pkglib_LTLIBRARIES=libfakechroot-cross.la
+libfakechroot_cross_la_SOURCES=libfakechroot.c exec.c
+libfakechroot_cross_la_LDFLAGS=-avoid-version
