@@ -1,3 +1,9 @@
+fakechroot-cross (2.5-2) unstable; urgency=low
+
+  * Changed source name to 'fakechroot-cross'.
+
+ -- Alexander Shishkin <virtuoso@slind.org>  Wed, 30 May 2007 13:51:07 +0400
+
 fakechroot (2.5-1.slind2) unstable; urgency=low
 
   * Fixed mknod tracking (closes: #593)

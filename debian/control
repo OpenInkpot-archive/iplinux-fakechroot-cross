@@ -1,4 +1,4 @@
-Source: fakechroot
+Source: fakechroot-cross
 Maintainer: Alexander Shishkin <virtuoso@slind.org>
 Section: devel
 Priority: optional
