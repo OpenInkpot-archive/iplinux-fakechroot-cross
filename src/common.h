@@ -94,7 +94,7 @@ static struct magic_struct MAGIC[] = {
 	} while (0);
 
 #define swapb(x) ( (((x) & 0xff) << 8) | (((x) & 0xff00)) >> 8 )
-static inline int is_our_elf(char *file)
+static inline int is_our_elf(const char *file)
 {
 	int fd = open(file, O_RDONLY);
 	int i, magidx = -1;
