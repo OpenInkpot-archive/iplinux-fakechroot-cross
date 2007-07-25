@@ -28,7 +28,7 @@ install-stamp:
 	dh_testdir
 	dh_testroot
 
-	$(MAKE) install DESTDIR=$(dir)
+	$(MAKE) install-strip DESTDIR=$(dir)
 	dh_installdirs
 	touch $@
 
