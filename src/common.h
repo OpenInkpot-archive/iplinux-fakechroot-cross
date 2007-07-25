@@ -1,7 +1,8 @@
+/* vi: set sw=4 ts=4: */
 /*
     libfakechroot -- fake chroot environment
     (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
-    (c) 2006 Alexander Shishkin <alexander.shishkin@siemens.com>
+    (c) 2006, 2007 Alexander Shishkin <virtuoso@slind.org>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -66,7 +67,7 @@
 #define ARCH_MAGIC_MAX 20
 #define ARCHNAME_MAX 16
 struct magic_struct {
-	const char arch[ARCHNAME_MAX];
+	const char *arch;
 	unsigned short mach; /* see EM_* constants from elf.h */
 };
 

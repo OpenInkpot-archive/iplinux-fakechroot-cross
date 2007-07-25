@@ -1,7 +1,8 @@
+/* vi: set sw=4 ts=4: */
 /*
  * libfakechroot -- fake chroot environment
  * (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
- * (c) 2006 Alexander Shishkin <alexander.shishkin@siemens.com>
+ * (c) 2006, 2007 Alexander Shishkin <virtuoso@slind.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,6 +24,7 @@
  */
 
 #include "common.h"
+#include "wrapper.h"
 
 /* #include <unistd.h> */
 int execl(const char *path, const char *arg, ...)
@@ -57,7 +59,6 @@ int execl(const char *path, const char *arg, ...)
 
 	return execve(path, (char *const *) argv, environ);
 }
-
 
 /* #include <unistd.h> */
 int execle(const char *path, const char *arg, ...)
@@ -161,9 +162,38 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	char *fakechroot_path, *fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	char cross_fn[FAKECHROOT_MAXPATH];
+	char *linkpath;
+	struct stat statbuf;
 
 	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
 			fakechroot_buf);
+
+	/* explicit symlink unwinding */
+	lstat(filename, &statbuf);
+	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
+	if (S_ISLNK(statbuf.st_mode)) {
+		char *fakechroot_path, *fakechroot_ptr;
+		char fakechroot_buf[FAKECHROOT_MAXPATH];
+
+		dprintf("### symlink\n");
+		linkpath = malloc(PATH_MAX);
+		if (!linkpath) return -ENOMEM;
+
+		i = readlink(filename, linkpath, PATH_MAX);
+		if (i < 0)
+			return errno;
+
+		dprintf("### to: %s\n", linkpath);
+		if (linkpath[0] == '/') {
+			expand_chroot_path(linkpath, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
+		
+			if (!linkpath) return -EINVAL;
+
+			return execve(linkpath, argv, envp);
+		}
+	}
+
 	strcpy(tmp, filename);
 	filename = tmp;
 

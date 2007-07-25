@@ -1,7 +1,8 @@
+/* vi: set sw=4 ts=4: */
 /*
    libfakechroot -- fake chroot environment
    (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
-   (c) 2006 Alexander Shishkin <alexander.shishkin@siemens.com>
+   (c) 2006 Alexander Shishkin <virtuoso@slind.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -651,6 +652,7 @@ int __xstat(int ver, const char *filename, struct stat *buf)
 
 	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
 			fakechroot_buf);
+	dprintf("*** %s: %s\n", __FUNCTION__, filename);
 	if (next___xstat == NULL) fakechroot_init();
 	return next___xstat(ver, filename, buf);
 }
@@ -664,11 +666,45 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 {
 	char *fakechroot_path, *fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
+	int ret;
+	char *linkpath;
+	struct stat statbuf;
 
 	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
 			fakechroot_buf);
+
 	if (next___xstat64 == NULL) fakechroot_init();
-	return next___xstat64(ver, filename, buf);
+
+	/* explicit symlink unwinding */
+	/* XXX: this is duplicate from execve() */
+	lstat(filename, &statbuf);
+	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
+	if (S_ISLNK(statbuf.st_mode)) {
+		char *fakechroot_path, *fakechroot_ptr;
+		char fakechroot_buf[FAKECHROOT_MAXPATH];
+		int i;
+
+		dprintf("### symlink\n");
+		linkpath = malloc(PATH_MAX);
+		if (!linkpath) return -ENOMEM;
+
+		i = readlink(filename, linkpath, PATH_MAX);
+		if (i < 0)
+			return errno;
+
+		dprintf("### to: %s\n", linkpath);
+		if (linkpath[0] == '/') {
+			expand_chroot_path(linkpath, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
+		
+			if (!linkpath) return -EINVAL;
+
+			return next___xstat64(ver, linkpath, buf); 
+		}
+	}
+	ret = next___xstat64(ver, filename, buf); 
+	dprintf("*** %s: %s ret=%d errno=%d\n", __FUNCTION__, filename, ret, errno);
+	return ret;
 }
 #endif
 
@@ -1803,6 +1839,7 @@ int stat(const char *file_name, struct stat *buf)
 
 	expand_chroot_path(file_name, fakechroot_path, fakechroot_ptr,
 			fakechroot_buf);
+	dprintf("*** %s: %s\n", __FUNCTION__, file_name);
 	if (next_stat == NULL) fakechroot_init();
 	return next_stat(file_name, buf);
 }

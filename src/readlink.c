@@ -1,0 +1,62 @@
+/* vi: set sw=4 ts=4: */
+/*
+ * libfakechroot -- fake chroot environment
+ * (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
+ * (c) 2006, 2007 Alexander Shishkin <virtuoso@slind.org>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or(at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
+ */
+
+/*
+ * readlink() call wrapper
+ */
+
+#include "common.h"
+#include "wrapper.h"
+#include "proto.h"
+
+/* #include <unistd.h> */
+ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
+{
+	int status;
+	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
+	char *fakechroot_path, *fakechroot_ptr;
+	char fakechroot_buf[FAKECHROOT_MAXPATH];
+
+	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+
+	if ((status = NEXTCALL(readlink)(path, tmp, bufsiz)) == -1)
+		return status;
+
+	/* TODO: shouldn't end with \000 */
+	tmp[status] = '\0';
+
+	fakechroot_path = getenv("FAKECHROOT_BASE");
+	if (fakechroot_path != NULL) {
+		fakechroot_ptr = strstr(tmp, fakechroot_path);
+		if (fakechroot_ptr != tmp)
+			tmpptr = tmp;
+		else
+			tmpptr = tmp + strlen(fakechroot_path);
+
+		strcpy(buf, tmpptr);
+	} else
+		strcpy(buf, tmp);
+
+	return strlen(buf);
+}
+
+DECLARE_WRAPPER(readlink);
+
