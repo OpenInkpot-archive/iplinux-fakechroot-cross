@@ -96,9 +96,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 
 	if (hashbang[0] != '#' || hashbang[1] != '!') {
 		if (!is_our_elf(filename)) {
-			 
-			narrow_chroot_path(filename, fakechroot_path,
-					fakechroot_ptr);
+			narrow_chroot_path(filename);
 			cross_subst(hashbang, filename);
 			dprintf("### executing host %s\n", hashbang);
 			return NEXTCALL(execve)(hashbang, argv, envp);
@@ -146,8 +144,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	if (!is_our_elf(newfilename)) {
 		 
 
-		narrow_chroot_path_modify(newfilename, fakechroot_path,
-				fakechroot_ptr);
+		narrow_chroot_path_modify(newfilename);
 		cross_subst(cross_fn, newfilename);
 		dprintf("### executing host %s\n", cross_fn);
 		return NEXTCALL(execve)(cross_fn, (char *const *)newargv, envp);

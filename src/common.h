@@ -129,7 +129,7 @@ extern const char *fakechroot_cross;
 	} while (0)
 
             /*fakechroot_path = getenv("FAKECHROOT_BASE"); \*/
-#define narrow_chroot_path(path, fakechroot_path__, fakechroot_ptr) \
+#define narrow_chroot_path(path) \
     { \
 		char *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) != '\0') { \
@@ -149,7 +149,7 @@ extern const char *fakechroot_cross;
 		dprintf("### narrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
     }
 
-#define narrow_chroot_path_modify(path, fakechroot_path__, fakechroot_ptr) \
+#define narrow_chroot_path_modify(path) \
     { \
 		char *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) != '\0') { \

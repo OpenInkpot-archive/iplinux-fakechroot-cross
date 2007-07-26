@@ -266,8 +266,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	if (!is_our_elf(newfilename)) {
 		 
 
-		narrow_chroot_path_modify(newfilename, fakechroot_path,
-				fakechroot_ptr);
+		narrow_chroot_path_modify(newfilename, fakechroot_ptr);
 		cross_subst(cross_fn, newfilename);
 		dprintf("### executing host %s\n", cross_fn);
 		return next_execve(cross_fn, (char *const *)newargv, envp);

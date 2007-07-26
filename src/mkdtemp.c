@@ -45,7 +45,7 @@ char *mkdtemp(char *template)
 
 	ptr = tmp;
 	strcpy(ptr, template);
-	narrow_chroot_path(ptr, fakechroot_path, fakechroot_ptr);
+	narrow_chroot_path(ptr);
 	if (ptr == NULL)
 		return NULL;
 

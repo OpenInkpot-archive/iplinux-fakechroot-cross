@@ -36,7 +36,7 @@ char *getcwd(char *buf, size_t size)
 	if ((cwd = NEXTCALL(getcwd)(buf, size)) == NULL)
 		return NULL;
 
-	narrow_chroot_path_modify(cwd, fakechroot_path, fakechroot_ptr);
+	narrow_chroot_path_modify(cwd);
 	return cwd;
 }
 

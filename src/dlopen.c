@@ -39,7 +39,7 @@ void *dlopen(const char *filename, int flag)
 	if (!is_our_elf(filename)) {
 		char newpath[FAKECHROOT_MAXPATH];
 
-		narrow_chroot_path(filename, fakechroot_path, fakechroot_ptr);
+		narrow_chroot_path(filename);
 		cross_subst(newpath, filename);
 		dprintf("### dlopen()ing host %s\n", newpath);
 		return NEXTCALL(dlopen)(newpath, flag);

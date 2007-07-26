@@ -39,7 +39,7 @@ char *get_current_dir_name(void)
 		return NULL;
 
 	oldptr = cwd;
-	narrow_chroot_path(cwd, fakechroot_path, fakechroot_ptr);
+	narrow_chroot_path(cwd);
 	if (cwd == NULL)
 		return NULL;
 
