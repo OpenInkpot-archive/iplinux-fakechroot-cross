@@ -93,24 +93,24 @@ extern const char *fakechroot_path;
 extern const char *fakechroot_cross;
 
 #define track_mknod(path, mode, dev) \
-        do { \
-			unsigned int __dev = dev; \
-			if (S_ISBLK(mode) || S_ISCHR(mode)) { \
-					FILE *f = fopen("/tmp/fakechroot-nodes", "a"); \
-					if (f) { \
-							fprintf(f, "mknod %s %c %d %d\n", \
-											path, \
-											(S_ISBLK(mode) ? 'b' : 'c'), \
-											(__dev >> 8), \
-											(__dev & 0xff)); \
-							fclose(f); \
-					} \
-			} \
-        } while (0)
+	do { \
+		unsigned int __dev = dev; \
+		if (S_ISBLK(mode) || S_ISCHR(mode)) { \
+				FILE *f = NEXTCALL(fopen)("/tmp/fakechroot-nodes", "a"); \
+				if (f) { \
+						fprintf(f, "mknod %s %c %d %d\n", \
+										path, \
+										(S_ISBLK(mode) ? 'b' : 'c'), \
+										(__dev >> 8), \
+										(__dev & 0xff)); \
+						fclose(f); \
+				} \
+		} \
+	} while (0)
 
 #define track_chown(path, owner, group) \
 	do { \
-		FILE *f = fopen("/tmp/fakechroot-owners", "a"); \
+		FILE *f = NEXTCALL(fopen)("/tmp/fakechroot-owners", "a"); \
 		if (f) { \
 			fprintf(f, "chown %d:%d %s\n", \
 					owner >= 1000 ? 0 : owner, \
