@@ -33,8 +33,7 @@ char *mktemp(char *template)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(template,
-			fakechroot_buf);
+	expand_chroot_path(template);
 
 	return NEXTCALL(mktemp)(template);
 }

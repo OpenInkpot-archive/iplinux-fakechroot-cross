@@ -34,7 +34,7 @@ int revoke(const char *file)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(file, fakechroot_buf);
+	expand_chroot_path(file);
 
 	return NEXTCALL(revoke)(file);
 }

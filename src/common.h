@@ -168,7 +168,7 @@ extern const char *fakechroot_cross;
                 } \
             } \
         } \
-	dprintf("### mnarrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
+		dprintf("### mnarrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
     }
 
 #if 0
@@ -190,7 +190,7 @@ extern const char *fakechroot_cross;
 	//dprintf("### expanded(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
 
 #else
-#define expand_chroot_path(path, __wtf) \
+#define expand_chroot_path(path) \
 	expand_chroot_path_malloc(path)
 #endif
 

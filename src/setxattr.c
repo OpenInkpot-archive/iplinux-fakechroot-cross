@@ -34,7 +34,7 @@ int setxattr(const char *path, const char *name, const void *value, size_t size,
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(setxattr)(path, name, value, size, flags);
 }

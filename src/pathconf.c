@@ -33,7 +33,7 @@ long pathconf(const char *path, int name)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(pathconf)(path, name);
 }

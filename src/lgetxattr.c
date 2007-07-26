@@ -34,7 +34,7 @@ ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(lgetxattr)(path, name, value, size);
 }

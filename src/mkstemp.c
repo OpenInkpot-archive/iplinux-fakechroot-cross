@@ -37,8 +37,7 @@ int mkstemp(char *template)
 
 	oldtemplate = template;
 
-	expand_chroot_path(template,
-			fakechroot_buf);
+	expand_chroot_path(template);
 
 	if ((fd = NEXTCALL(mkstemp)(template)) == -1)
 		return -1;

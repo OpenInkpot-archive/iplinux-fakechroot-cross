@@ -34,7 +34,7 @@ int chmod(const char *path, mode_t mode)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(chmod)(path, mode);
 }

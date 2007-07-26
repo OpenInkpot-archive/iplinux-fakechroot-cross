@@ -37,8 +37,7 @@ char *mkdtemp(char *template)
 
 	oldtemplate = template;
 
-	expand_chroot_path(template,
-			fakechroot_buf);
+	expand_chroot_path(template);
 
 
 	if (NEXTCALL(mkdtemp)(template) == NULL)

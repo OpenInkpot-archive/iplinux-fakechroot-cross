@@ -33,8 +33,7 @@ int access(const char *pathname, int mode)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname,
-			fakechroot_buf);
+	expand_chroot_path(pathname);
 
 	return NEXTCALL(access)(pathname, mode);
 }

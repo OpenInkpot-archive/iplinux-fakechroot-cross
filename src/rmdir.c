@@ -33,8 +33,7 @@ int rmdir(const char *pathname)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname,
-			fakechroot_buf);
+	expand_chroot_path(pathname);
 
 	return NEXTCALL(rmdir)(pathname);
 }

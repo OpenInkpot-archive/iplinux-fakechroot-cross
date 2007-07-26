@@ -35,7 +35,7 @@ int ftw64 (const char *dir, int(*fn)(const char *file, const struct stat64 *sb, 
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(dir, fakechroot_buf);
+	expand_chroot_path(dir);
 
 	return NEXTCALL(ftw64)(dir, fn, nopenfd);
 }

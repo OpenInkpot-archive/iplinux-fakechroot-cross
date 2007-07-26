@@ -34,7 +34,7 @@ char *canonicalize_file_name(const char *name)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(name, fakechroot_buf);
+	expand_chroot_path(name);
 
 	return NEXTCALL(canonicalize_file_name)(name);
 }

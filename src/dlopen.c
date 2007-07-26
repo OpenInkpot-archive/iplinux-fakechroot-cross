@@ -34,8 +34,7 @@ void *dlopen(const char *filename, int flag)
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(filename));
-	expand_chroot_path(filename,
-			fakechroot_buf);
+	expand_chroot_path(filename);
 
 	if (!is_our_elf(filename)) {
 		char newpath[FAKECHROOT_MAXPATH];

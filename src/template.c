@@ -33,8 +33,7 @@ int utimes(const char *filename, const struct timeval tv[2])
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(filename,
-			fakechroot_buf);
+	expand_chroot_path(filename);
 
 	return NEXTCALL(utimes)(filename, tv);
 }

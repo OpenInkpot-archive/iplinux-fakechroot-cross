@@ -38,8 +38,7 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 	char *linkpath;
 	struct stat statbuf;
 
-	expand_chroot_path(filename,
-			fakechroot_buf);
+	expand_chroot_path(filename);
 
 
 	/* explicit symlink unwinding */
@@ -62,7 +61,7 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 
 		dprintf("### to: %s\n", linkpath);
 		if (linkpath[0] == '/') {
-			expand_chroot_path(linkpath, fakechroot_buf);
+			expand_chroot_path(linkpath);
 			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
 		
 			if (!linkpath) return -EINVAL;

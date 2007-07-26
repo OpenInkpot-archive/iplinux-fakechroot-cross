@@ -33,11 +33,10 @@ int symlink(const char *oldpath, const char *newpath)
 	char tmp[FAKECHROOT_MAXPATH];
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
-	/*expand_chroot_path(oldpath, fakechroot_buf);*/
+	/*expand_chroot_path(oldpath);*/
 	strcpy(tmp, oldpath);
 	oldpath=tmp;
-	expand_chroot_path(newpath,
-			fakechroot_buf);
+	expand_chroot_path(newpath);
 
 	return NEXTCALL(symlink)(oldpath, newpath);
 }

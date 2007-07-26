@@ -35,8 +35,7 @@ int creat(const char *pathname, mode_t mode)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname,
-			fakechroot_buf);
+	expand_chroot_path(pathname);
 
 	return NEXTCALL(creat)(pathname, mode);
 }

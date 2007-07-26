@@ -35,7 +35,7 @@ ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 	char fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	if ((status = NEXTCALL(readlink)(path, tmp, bufsiz)) == -1)
 		return status;

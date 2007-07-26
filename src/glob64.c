@@ -37,8 +37,7 @@ int glob64(const char *pattern, int flags, int(*errfunc) (const char *, int),
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	char *fakechroot_ptr;
 
-	expand_chroot_path(pattern,
-			fakechroot_buf);
+	expand_chroot_path(pattern);
 
 
 	rc = NEXTCALL(glob64)(pattern, flags, errfunc, pglob);

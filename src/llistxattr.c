@@ -32,7 +32,7 @@
 ssize_t llistxattr(const char *path, char *list, size_t size)
 {
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(llistxattr)(path, list, size);
 }

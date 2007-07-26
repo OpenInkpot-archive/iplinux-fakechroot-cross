@@ -131,7 +131,7 @@ int execlp(const char *file, const char *arg, ...)
 	}
 	va_end(args);
 
-	expand_chroot_path(file, fakechroot_buf);
+	expand_chroot_path(file);
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(file));
 
 	if (next_execvp == NULL) fakechroot_init();
@@ -165,8 +165,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	char *linkpath;
 	struct stat statbuf;
 
-	expand_chroot_path(filename,
-			fakechroot_buf);
+	expand_chroot_path(filename);
 
 	/* explicit symlink unwinding */
 	lstat(filename, &statbuf);
@@ -185,7 +184,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 
 		dprintf("### to: %s\n", linkpath);
 		if (linkpath[0] == '/') {
-			expand_chroot_path(linkpath, fakechroot_buf);
+			expand_chroot_path(linkpath);
 			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
 		
 			if (!linkpath) return -EINVAL;
@@ -256,8 +255,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 			break;
 	}
 
-	expand_chroot_path(filename,
-			fakechroot_buf);
+	expand_chroot_path(filename);
 	newargv[n++] = filename;
 
 	for (i = 1; argv[i] != NULL && i<argv_max; )

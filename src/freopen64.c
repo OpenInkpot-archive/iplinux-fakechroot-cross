@@ -33,7 +33,7 @@ FILE *freopen64 (const char *path, const char *mode, FILE *stream)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_buf);
+	expand_chroot_path(path);
 
 	return NEXTCALL(freopen64)(path, mode, stream);
 }

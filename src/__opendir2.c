@@ -32,7 +32,7 @@
 /* #include <dirent.h> */
 DIR *__opendir2 (const char *name, int flags)
 {
-	expand_chroot_path(name, fakechroot_buf);
+	expand_chroot_path(name);
 
 	return NEXTCALL(__opendir2)(name, flags);
 }

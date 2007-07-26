@@ -34,7 +34,7 @@ int __open64 (const char *pathname, int flags, ...)
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int mode = 0;
 
-	expand_chroot_path(pathname, fakechroot_buf);
+	expand_chroot_path(pathname);
 
 	if (flags & O_CREAT) {
 		va_list arg;

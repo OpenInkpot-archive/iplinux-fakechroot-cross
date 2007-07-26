@@ -34,8 +34,7 @@ int glob_pattern_p(const char *pattern, int quote)
 	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pattern,
-			fakechroot_buf);
+	expand_chroot_path(pattern);
 
 	return NEXTCALL(glob_pattern_p)(pattern, quote);
 }

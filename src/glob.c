@@ -36,8 +36,7 @@ int glob(const char *pattern, int flags, int(*errfunc) (const char *, int),
 	char *fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pattern,
-			fakechroot_buf);
+	expand_chroot_path(pattern);
 
 	rc = NEXTCALL(glob)(pattern, flags, errfunc, pglob);
 	if (rc < 0)
