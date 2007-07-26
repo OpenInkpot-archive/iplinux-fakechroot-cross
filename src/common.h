@@ -64,6 +64,22 @@
 #define FAKECHROOT_MAXPATH 2048
 #endif
 
+/* debugging stuff */
+extern unsigned int fchr_opts;
+#define OPT_DEBUG    0x00000001
+#define OPT_LOAD_NOW 0x00000002
+#define OPT_LIST_WRAPPERS 0x00000003
+#define OPT_TRANSP   0x80000000
+
+#define FCHR_OPT_ENV "FAKECHROOT_OPTS"
+
+#define dprintf(fmt, args...) \
+	do { \
+		if (fchr_opts & OPT_DEBUG) \
+			fprintf(stderr, fmt, ## args); \
+	} while (0);
+
+/* cross stuff */
 #define ARCH_MAGIC_MAX 20
 #define ARCHNAME_MAX 16
 struct magic_struct {
@@ -71,85 +87,25 @@ struct magic_struct {
 	unsigned short mach; /* see EM_* constants from elf.h */
 };
 
-static struct magic_struct MAGIC[] = {
-	{ .arch = "arm",            .mach = EM_ARM  },
-	{ .arch = "uclibc-arm",     .mach = EM_ARM  },
-	{ .arch = "powerpc",        .mach = EM_PPC  },
-	{ .arch = "uclibc-powerpc", .mach = EM_PPC  },
-	{ .arch = "mips",           .mach = EM_MIPS },
-	{ .arch = "uclibc-mips",    .mach = EM_MIPS },
-	{ .arch = "mipsel",         .mach = EM_MIPS },
-	{ .arch = "uclibc-mipsel",  .mach = EM_MIPS },
-	{ .arch = "sh4",            .mach = EM_SH },
-	{ .arch = "uclibc-sh4",     .mach = EM_SH },
-	{ .arch = "ppc64",          .mach = EM_PPC64 },
-	{ .arch = "i386",           .mach = EM_386 },
-	{ .arch = "uclibc-i386",    .mach = EM_386 },
-};
+int is_our_elf(const char *file);
 
-#define dprintf(fmt, args...) \
-	do { \
-		char *dbg = getenv("FAKECHROOT_DEBUG"); \
-		if (dbg) \
-			fprintf(stderr, fmt, ## args); \
-	} while (0);
-
-#define swapb(x) ( (((x) & 0xff) << 8) | (((x) & 0xff00)) >> 8 )
-static inline int is_our_elf(const char *file)
-{
-	int fd = open(file, O_RDONLY);
-	int i, magidx = -1;
-	Elf32_Ehdr elfh;
-	char *arch;
-
-	arch = getenv("CROSS_ARCH");
-	if (!arch) {
-		dprintf("### no arch name defined\n");
-		return -1;
-	}
-
-	for (i = 0; i < sizeof(MAGIC)/sizeof(struct magic_struct); i++) {
-		dprintf("### -> %s\n", MAGIC[i].arch);
-		if (!strcmp(arch, MAGIC[i].arch)) {
-			magidx = i;
-			break;
-		}
-	}
-
-	if (magidx == -1) {
-		dprintf("### no magic found for arch %s\n", arch);
-		return -1;
-	}
-
-	dprintf("### file=%s\n", file);
-	if (fd < 0)
-		return -ENOENT;
-
-	i = read(fd, &elfh, sizeof(Elf32_Ehdr));
-	close(fd);
-
-	if (i < sizeof(Elf32_Ehdr)) return -1;
-	if (elfh.e_machine != MAGIC[magidx].mach &&
-	    elfh.e_machine != swapb(MAGIC[magidx].mach))
-		return -1;
-
-	return 0;
-}
+extern const char *fakechroot_path;
+extern const char *fakechroot_cross;
 
 #define track_mknod(path, mode, dev) \
         do { \
-		unsigned int __dev = dev; \
-                if (1 || S_ISBLK(mode) || S_ISCHR(mode)) { \
-                        FILE *f = fopen("/tmp/fakechroot-nodes", "a"); \
-                        if (f) { \
-                                fprintf(f, "mknod %s %c %d %d\n", \
-                                                path, \
-                                                (S_ISBLK(mode) ? 'b' : 'c'), \
-                                                (__dev >> 8), \
-                                                (__dev & 0xff)); \
-                                fclose(f); \
-                        } \
-                } \
+			unsigned int __dev = dev; \
+			if (S_ISBLK(mode) || S_ISCHR(mode)) { \
+					FILE *f = fopen("/tmp/fakechroot-nodes", "a"); \
+					if (f) { \
+							fprintf(f, "mknod %s %c %d %d\n", \
+											path, \
+											(S_ISBLK(mode) ? 'b' : 'c'), \
+											(__dev >> 8), \
+											(__dev & 0xff)); \
+							fclose(f); \
+					} \
+			} \
         } while (0)
 
 #define track_chown(path, owner, group) \
@@ -163,9 +119,8 @@ static inline int is_our_elf(const char *file)
 		} \
 	} while (0)
 
-#define cross_subst(path, origpath, fakechroot_cross) \
+#define cross_subst(path, origpath) \
 	do { \
-		fakechroot_cross = getenv("FAKECHROOT_CROSS"); \
 		if (fakechroot_cross) { \
 			snprintf(path, FAKECHROOT_MAXPATH, "%s/%s", \
 					fakechroot_cross, origpath); \
@@ -173,8 +128,10 @@ static inline int is_our_elf(const char *file)
 			strncpy(path, origpath, FAKECHROOT_MAXPATH); \
 	} while (0)
 
-#define narrow_chroot_path(path, fakechroot_path, fakechroot_ptr) \
+            /*fakechroot_path = getenv("FAKECHROOT_BASE"); \*/
+#define narrow_chroot_path(path, fakechroot_path__, fakechroot_ptr) \
     { \
+		char *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) != '\0') { \
             fakechroot_path = getenv("FAKECHROOT_BASE"); \
             if (fakechroot_path != NULL) { \
@@ -189,16 +146,17 @@ static inline int is_our_elf(const char *file)
                 } \
             } \
         } \
-	dprintf("### narrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
+		dprintf("### narrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
     }
 
-#define narrow_chroot_path_modify(path, fakechroot_path, fakechroot_ptr) \
+#define narrow_chroot_path_modify(path, fakechroot_path__, fakechroot_ptr) \
     { \
+		char *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) != '\0') { \
-	    int l1, l2; \
+			int l1, l2; \
             fakechroot_path = getenv("FAKECHROOT_BASE"); \
-            if (fakechroot_path != NULL) { \
-		l1 = strlen(fakechroot_path); \
+			if (fakechroot_path != NULL) { \
+				l1 = strlen(fakechroot_path); \
                 fakechroot_ptr = strstr((path), fakechroot_path); \
                 if (fakechroot_ptr == (path)) { \
                     if ((l2 = strlen((path))) == l1) { \
@@ -213,8 +171,10 @@ static inline int is_our_elf(const char *file)
 	dprintf("### mnarrow(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
     }
 
-#define expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf) \
+#if 0
+#define expand_chroot_path(path, fakechroot_buf) \
     { \
+		char *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) == '/') { \
             fakechroot_path = getenv("FAKECHROOT_BASE"); \
             if (fakechroot_path != NULL) { \
@@ -229,8 +189,14 @@ static inline int is_our_elf(const char *file)
     }
 	//dprintf("### expanded(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
 
-#define expand_chroot_path_malloc(path, fakechroot_path, fakechroot_ptr, fakechroot_buf) \
+#else
+#define expand_chroot_path(path, __wtf) \
+	expand_chroot_path_malloc(path)
+#endif
+
+#define expand_chroot_path_malloc(path) \
     { \
+		char *fakechroot_buf, *fakechroot_ptr; \
         if ((path) != NULL && *((char *)(path)) == '/') { \
             fakechroot_path = getenv("FAKECHROOT_BASE"); \
             if (fakechroot_path != NULL) { \
@@ -250,23 +216,5 @@ static inline int is_our_elf(const char *file)
 
 	//dprintf("### mexpanded(%s): path=%s fpath=%s\n", __FUNCTION__, path, fakechroot_path); \
 
-#define nextsym(function, name) \
-    { \
-        char *msg; \
-	if (next_##function == NULL) { \
-	    *(void **)(&next_##function) = dlsym(RTLD_NEXT, name); \
-	    if ((msg = dlerror()) != NULL) { \
- 		fprintf (stderr, "%s: dlsym(%s): %s\n", PACKAGE, name, msg); \
-	    } \
-	} \
-    }
-
-extern int     (*next_execl) (const char *path, const char *arg, ...);
-int     (*next_execle) (const char *path, const char *arg, ...);
-int     (*next_execlp) (const char *file, const char *arg, ...);
-int     (*next_execv) (const char *path, char *const argv []);
-
-int     (*next_execve) (const char *filename, char *const argv [], char *const envp[]);
-int     (*next_execvp) (const char *file, char *const argv []);
 #endif
 

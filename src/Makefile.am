@@ -3,6 +3,7 @@
 pkglib_LTLIBRARIES=libfakechroot-cross.la
 libfakechroot_cross_la_SOURCES = \
 			    lib-main.c \
+			    lib-cross.c\
 			    util.c     \
 			    access.c   \
 			    acct.c     \

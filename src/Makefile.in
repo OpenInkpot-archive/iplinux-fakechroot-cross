@@ -60,9 +60,9 @@ am__installdirs = "$(DESTDIR)$(pkglibdir)"
 pkglibLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(pkglib_LTLIBRARIES)
 libfakechroot_cross_la_LIBADD =
-am_libfakechroot_cross_la_OBJECTS = lib-main.lo util.lo access.lo \
-	acct.lo chdir.lo chmod.lo chown.lo chroot.lo creat.lo \
-	creat64.lo dlopen.lo fopen.lo fopen64.lo freopen.lo \
+am_libfakechroot_cross_la_OBJECTS = lib-main.lo lib-cross.lo util.lo \
+	access.lo acct.lo chdir.lo chmod.lo chown.lo chroot.lo \
+	creat.lo creat64.lo dlopen.lo fopen.lo fopen64.lo freopen.lo \
 	freopen64.lo getcwd.lo getwd.lo glob.lo lchown.lo link.lo \
 	mkdir.lo mkfifo.lo mkstemp.lo mkstemp64.lo mktemp.lo open.lo \
 	open64.lo pathconf.lo readlink.lo realpath.lo remove.lo \
@@ -203,6 +203,7 @@ target_vendor = @target_vendor@
 pkglib_LTLIBRARIES = libfakechroot-cross.la
 libfakechroot_cross_la_SOURCES = \
 			    lib-main.c \
+			    lib-cross.c\
 			    util.c     \
 			    access.c   \
 			    acct.c     \
@@ -405,6 +406,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lchown.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lckpwdf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lgetxattr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib-cross.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib-main.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/link.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/listxattr.Plo@am__quote@
