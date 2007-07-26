@@ -33,10 +33,10 @@ int scandir64 (const char *dir, struct dirent64 ***namelist,
 		int(*filter)(const struct dirent64 *),
 		int(*compar)(const void *, const void *))
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(dir, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(dir, fakechroot_buf);
 
 	return NEXTCALL(scandir64)(dir, namelist, filter, compar);
 }

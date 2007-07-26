@@ -31,7 +31,7 @@
 char *getwd(char *buf)
 {
 	char *cwd;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 
 	if ((cwd = NEXTCALL(getwd)(buf)) == NULL)
 		return NULL;

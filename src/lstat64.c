@@ -33,10 +33,10 @@
 /* #include <unistd.h> */
 int lstat64 (const char *file_name, struct stat64 *buf)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(file_name, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(file_name,
 			fakechroot_buf);
 
 	return NEXTCALL(lstat64)(file_name, buf);

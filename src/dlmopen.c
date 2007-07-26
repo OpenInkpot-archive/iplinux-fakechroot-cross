@@ -31,11 +31,11 @@
 /* #include <dlfcn.h> */
 void *dlmopen(Lmid_t nsid, const char *filename, int flag)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(filename));
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 	return NEXTCALL(dlmopen)(nsid, filename, flag);

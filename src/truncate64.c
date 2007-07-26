@@ -32,10 +32,10 @@
 /* #include <sys/types.h> */
 int truncate64 (const char *path, off64_t length)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(truncate64)(path, length);
 }

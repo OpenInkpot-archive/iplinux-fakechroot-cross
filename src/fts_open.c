@@ -33,11 +33,11 @@
 FTS *fts_open(char * const *path_argv, int options,
 		int(*compar)(const FTSENT **, const FTSENT **))
 {
-	char *fakechroot_path, *fakechroot_ptr, *fakechroot_buf;
 	char *path;
 	char * const *p;
 	char **new_path_argv;
 	char **np;
+	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int n;
 
 	for (n=0, p=path_argv; *p; n++, p++);
@@ -46,8 +46,7 @@ FTS *fts_open(char * const *path_argv, int options,
 
 	for (n=0, p=path_argv, np=new_path_argv; *p; n++, p++, np++) {
 		path = *p;
-		expand_chroot_path_malloc(path, fakechroot_path, fakechroot_ptr,
-				fakechroot_buf);
+		expand_chroot_path_malloc(path);
 		*np = path;
 	}
 

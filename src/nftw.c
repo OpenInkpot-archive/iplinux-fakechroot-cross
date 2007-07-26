@@ -32,10 +32,10 @@
 int nftw(const char *dir, int(*fn)(const char *file, const struct stat *sb,
 			int flag, struct FTW *s), int nopenfd, int flags)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(dir, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(dir, fakechroot_buf);
 
 	return NEXTCALL(nftw)(dir, fn, nopenfd, flags);
 }

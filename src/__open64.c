@@ -31,10 +31,10 @@
 /* Internal libc function */
 int __open64 (const char *pathname, int flags, ...)
 {
+	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int mode = 0;
-	char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(pathname, fakechroot_buf);
 
 	if (flags & O_CREAT) {
 		va_list arg;

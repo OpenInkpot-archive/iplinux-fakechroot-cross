@@ -32,12 +32,12 @@ int mkstemp64 (char *template)
 {
 	char tmp[FAKECHROOT_MAXPATH], *oldtemplate, *ptr;
 	int fd;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	oldtemplate = template;
 
-	expand_chroot_path(template, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(template,
 			fakechroot_buf);
 
 	if ((fd = NEXTCALL(mkstemp64)(template)) == -1)

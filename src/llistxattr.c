@@ -31,8 +31,8 @@
 /* #include <sys/xattr.h> */
 ssize_t llistxattr(const char *path, char *list, size_t size)
 {
-	char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	char fakechroot_buf[FAKECHROOT_MAXPATH];
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(llistxattr)(path, list, size);
 }

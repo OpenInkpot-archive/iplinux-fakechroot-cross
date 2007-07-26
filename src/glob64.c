@@ -34,10 +34,10 @@ int glob64(const char *pattern, int flags, int(*errfunc) (const char *, int),
 {
 	int rc,i;
 	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
-	char *fakechroot_path, *fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
+	char *fakechroot_ptr;
 
-	expand_chroot_path(pattern, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(pattern,
 			fakechroot_buf);
 
 
@@ -47,7 +47,6 @@ int glob64(const char *pattern, int flags, int(*errfunc) (const char *, int),
 
 	for (i = 0; i < pglob->gl_pathc; i++) {
 		strcpy(tmp,pglob->gl_pathv[i]);
-		fakechroot_path = getenv("FAKECHROOT_BASE");
 		if (fakechroot_path != NULL) {
 			fakechroot_ptr = strstr(tmp, fakechroot_path);
 

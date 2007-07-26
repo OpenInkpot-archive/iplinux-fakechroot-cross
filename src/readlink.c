@@ -32,10 +32,10 @@ ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 {
 	int status;
 	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
-	char *fakechroot_path, *fakechroot_ptr;
+	char fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	if ((status = NEXTCALL(readlink)(path, tmp, bufsiz)) == -1)
 		return status;
@@ -43,7 +43,6 @@ ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 	/* TODO: shouldn't end with \000 */
 	tmp[status] = '\0';
 
-	fakechroot_path = getenv("FAKECHROOT_BASE");
 	if (fakechroot_path != NULL) {
 		fakechroot_ptr = strstr(tmp, fakechroot_path);
 		if (fakechroot_ptr != tmp)

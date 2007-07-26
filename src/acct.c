@@ -30,10 +30,10 @@
 /* #include <unistd.h> */
 int acct(const char *filename)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 	return NEXTCALL(acct)(filename);

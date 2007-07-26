@@ -32,13 +32,13 @@
 /* #include <unistd.h> */
 int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int ret;
 	char *linkpath;
 	struct stat statbuf;
 
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 
@@ -47,7 +47,7 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 	lstat(filename, &statbuf);
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
 	if (S_ISLNK(statbuf.st_mode)) {
-		char *fakechroot_path, *fakechroot_ptr;
+		 
 		char fakechroot_buf[FAKECHROOT_MAXPATH];
 		int i;
 
@@ -62,7 +62,7 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 
 		dprintf("### to: %s\n", linkpath);
 		if (linkpath[0] == '/') {
-			expand_chroot_path(linkpath, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+			expand_chroot_path(linkpath, fakechroot_buf);
 			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
 		
 			if (!linkpath) return -EINVAL;

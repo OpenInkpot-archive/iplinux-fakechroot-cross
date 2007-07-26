@@ -31,14 +31,12 @@
 char *tmpnam(char *s)
 {
 	char *ptr;
-	char *fakechroot_path, *fakechroot_ptr, *fakechroot_buf;
 
 	if (s != NULL)
 		return NEXTCALL(tmpnam)(s);
 
 	ptr = NEXTCALL(tmpnam)(NULL);
-	expand_chroot_path_malloc(ptr, fakechroot_path, fakechroot_ptr,
-			fakechroot_buf);
+	expand_chroot_path_malloc(ptr);
 	return ptr;
 }
 

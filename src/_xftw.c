@@ -31,10 +31,10 @@
 /* include <ftw.h> */
 int _xftw(int mode, const char *dir, int(*fn)(const char *file, const struct stat *sb, int flag), int nopenfd)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(dir, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(dir, fakechroot_buf);
 
 	return NEXTCALL(_xftw)(mode, dir, fn, nopenfd);
 }

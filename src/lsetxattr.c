@@ -32,10 +32,10 @@
 int lsetxattr(const char *path, const char *name, const void *value,
 		size_t size, int flags)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(lsetxattr)(path, name, value, size, flags);
 }

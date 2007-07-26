@@ -32,10 +32,10 @@
 /* #include <unistd.h> */
 int __xstat(int ver, const char *filename, struct stat *buf)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 	dprintf("*** %s: %s\n", __FUNCTION__, filename);
 

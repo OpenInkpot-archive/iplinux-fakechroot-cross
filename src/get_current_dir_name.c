@@ -32,7 +32,7 @@
 char *get_current_dir_name(void)
 {
 	char *cwd, *oldptr, *newptr;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 
 
 	if ((cwd = NEXTCALL(get_current_dir_name)()) == NULL)

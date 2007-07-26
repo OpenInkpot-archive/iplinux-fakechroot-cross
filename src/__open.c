@@ -32,10 +32,9 @@
 int __open(const char *pathname, int flags, ...)
 {
 	int mode = 0;
-	char *fakechroot_path, *fakechroot_ptr;
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(pathname,
 			fakechroot_buf);
 
 	if (flags & O_CREAT) {

@@ -31,7 +31,7 @@
 char *realpath(const char *name, char *resolved)
 {
 	char *ptr;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 
 	if ((ptr = NEXTCALL(realpath)(name, resolved)) != NULL)
 		narrow_chroot_path(ptr, fakechroot_path, fakechroot_ptr);

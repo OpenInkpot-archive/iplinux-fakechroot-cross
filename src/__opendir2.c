@@ -32,8 +32,7 @@
 /* #include <dirent.h> */
 DIR *__opendir2 (const char *name, int flags)
 {
-	char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
-	expand_chroot_path(name, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(name, fakechroot_buf);
 
 	return NEXTCALL(__opendir2)(name, flags);
 }

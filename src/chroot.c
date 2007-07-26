@@ -30,7 +30,7 @@
 /* #include <unistd.h> */
 int chroot(const char *path)
 {
-	char *ptr, *ld_library_path, *tmp, *fakechroot_path;
+	char *ptr, *ld_library_path, *tmp;
 	int status, len;
 	char dir[FAKECHROOT_MAXPATH];
 	char *crossdir;
@@ -38,15 +38,20 @@ int chroot(const char *path)
 	char *envbuf;
 #endif
 
-	fakechroot_path = getenv("FAKECHROOT_BASE");
+	dprintf("==== fake chroot() ====\n");
+
+	/* Don't do nested chroots */
 	if (fakechroot_path != NULL)
 		return EFAULT;
+	dprintf("* fakechroot_path==NULL\n");
 
 	if ((status = chdir(path)) != 0)
 		return status;
+	dprintf("* chdir(%s)\n", path);
 
 	if (getcwd(dir, FAKECHROOT_MAXPATH) == NULL)
 		return EFAULT;
+	dprintf("* getcwd(%s)\n", path);
 
 	ptr = rindex(dir, 0);
 	if (ptr > dir) {
@@ -63,7 +68,6 @@ int chroot(const char *path)
 	snprintf(envbuf, FAKECHROOT_MAXPATH+16, "FAKECHROOT_BASE=%s", dir);
 	putenv(envbuf);
 #endif
-	fakechroot_path = getenv("FAKECHROOT_BASE");
 	crossdir = getenv("FAKECHROOT_CROSS");
 	if (!crossdir)
 		return EFAULT;

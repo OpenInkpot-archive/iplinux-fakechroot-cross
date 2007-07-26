@@ -31,10 +31,10 @@
 /* #include <unistd.h> */
 int lchown(const char *path, uid_t owner, gid_t group)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(lchown)(path, owner, group);
 }

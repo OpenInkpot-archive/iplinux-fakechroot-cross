@@ -31,10 +31,10 @@
 /* #include <glob.h> */
 int glob_pattern_p(const char *pattern, int quote)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pattern, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(pattern,
 			fakechroot_buf);
 
 	return NEXTCALL(glob_pattern_p)(pattern, quote);

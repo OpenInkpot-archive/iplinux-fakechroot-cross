@@ -32,10 +32,10 @@
 /* #include <unistd.h> */
 int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 {
-	char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	track_mknod(path, mode, *dev);
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(__xmknod)(ver, path, mode, dev);
 }

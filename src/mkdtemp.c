@@ -32,12 +32,12 @@
 char *mkdtemp(char *template)
 {
 	char tmp[FAKECHROOT_MAXPATH], *oldtemplate, *ptr;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	oldtemplate = template;
 
-	expand_chroot_path(template, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(template,
 			fakechroot_buf);
 
 

@@ -30,10 +30,10 @@
 /* #include <unistd.h> */
 int access(const char *pathname, int mode)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(pathname,
 			fakechroot_buf);
 
 	return NEXTCALL(access)(pathname, mode);

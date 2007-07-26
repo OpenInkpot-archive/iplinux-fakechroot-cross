@@ -31,10 +31,10 @@
 /* #include <sys/types.h> */
 int truncate(const char *path, off_t length)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(path, fakechroot_buf);
 
 	return NEXTCALL(truncate)(path, length);
 }

@@ -36,7 +36,7 @@ int execlp(const char *file, const char *arg, ...)
 	const char **argv = alloca(argv_max * sizeof(const char *));
 	unsigned int i;
 	va_list args;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("### %s\n", __FUNCTION__);
@@ -63,7 +63,7 @@ int execlp(const char *file, const char *arg, ...)
 	}
 	va_end(args);
 
-	expand_chroot_path(file, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(file, fakechroot_buf);
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(file));
 
 	return NEXTCALL(execvp)(file, (char *const *) argv);

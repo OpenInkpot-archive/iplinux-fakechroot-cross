@@ -31,10 +31,10 @@
 /* #include <utime.h> */
 int utime(const char *filename, const struct utimbuf *buf)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 	return NEXTCALL(utime)(filename, buf);

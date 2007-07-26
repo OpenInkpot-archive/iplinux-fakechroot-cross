@@ -30,10 +30,10 @@
 /* #include <unistd.h> */
 int unlink(const char *pathname)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(pathname,
 			fakechroot_buf);
 
 	return NEXTCALL(unlink)(pathname);

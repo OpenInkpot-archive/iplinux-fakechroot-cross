@@ -41,21 +41,21 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	char *ptr;
 	unsigned int i, j, n;
 	char c;
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	char cross_fn[FAKECHROOT_MAXPATH];
 	char *linkpath;
 	struct stat statbuf;
 
 	WRAPPER_PROLOGUE();
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 	/* explicit symlink unwinding */
 	lstat(filename, &statbuf);
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
 	if (S_ISLNK(statbuf.st_mode)) {
-		char *fakechroot_path, *fakechroot_ptr;
+		 
 		char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 		dprintf("### symlink\n");
@@ -69,7 +69,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 
 		dprintf("### to: %s\n", linkpath);
 		if (linkpath[0] == '/') {
-			expand_chroot_path(linkpath, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+			expand_chroot_path(linkpath, fakechroot_buf);
 			dprintf("### %s is a symlink to abs path, expanded to %s\n", filename, linkpath);
 		
 			if (!linkpath) return -EINVAL;
@@ -95,14 +95,12 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 		return -1;
 	}
 
-	if (next_execve == NULL) fakechroot_init();
-
 	if (hashbang[0] != '#' || hashbang[1] != '!') {
 		if (!is_our_elf(filename)) {
-			char *fakechroot_path, *fakechroot_ptr;
+			 
 			narrow_chroot_path(filename, fakechroot_path,
 					fakechroot_ptr);
-			cross_subst(hashbang, filename, fakechroot_path);
+			cross_subst(hashbang, filename);
 			dprintf("### executing host %s\n", hashbang);
 			return NEXTCALL(execve)(hashbang, argv, envp);
 		}
@@ -125,9 +123,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 			if (i > j) {
 				if (n == 0) {
 					ptr = &hashbang[j];
-					expand_chroot_path(ptr, fakechroot_path,
-							fakechroot_ptr,
-							fakechroot_buf);
+					expand_chroot_path(ptr,	fakechroot_buf);
 					strcpy(newfilename, ptr);
 					strcpy(argv0, &hashbang[j]);
 					newargv[n++] = argv0;
@@ -140,8 +136,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 			break;
 	}
 
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
-			fakechroot_buf);
+	expand_chroot_path(filename, fakechroot_buf);
 	newargv[n++] = filename;
 
 	for (i = 1; argv[i] != NULL && i<argv_max; )
@@ -150,11 +145,11 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	newargv[n] = 0;
 
 	if (!is_our_elf(newfilename)) {
-		char *fakechroot_path, *fakechroot_ptr;
+		 
 
 		narrow_chroot_path_modify(newfilename, fakechroot_path,
 				fakechroot_ptr);
-		cross_subst(cross_fn, newfilename, fakechroot_path);
+		cross_subst(cross_fn, newfilename);
 		dprintf("### executing host %s\n", cross_fn);
 		return NEXTCALL(execve)(cross_fn, (char *const *)newargv, envp);
 	}

@@ -23,8 +23,41 @@
 #include "wrapper.h"
 
 void fakechroot_init(void) __attribute__((constructor));
-static unsigned int fchr_opts = 1;
-#define OPT_LOAD_NOW 0x01
+unsigned int fchr_opts = 0;
+
+/* Path to fake chroot environment: read-only, thus thread-safe */
+const char *fakechroot_path = NULL;
+
+void fchr_parse_opts()
+{
+	char *optvar = getenv(FCHR_OPT_ENV);
+	char *p;
+
+	if (!optvar)
+		return;
+
+	for (p = optvar; *p; p++) {
+		switch (*p) {
+			/* debugging */
+			case 'D':
+				fchr_opts |= OPT_DEBUG;
+				break;
+
+			case 'N':
+				fchr_opts |= OPT_LOAD_NOW;
+				break;
+
+			case 'T':
+				fchr_opts |= OPT_TRANSP;
+				break;
+
+			default:
+				dprintf("Unknown option '%c'.\n", *p);
+		}
+	}
+}
+
+void cross_init();
 
 /*
  * Library constructor
@@ -33,19 +66,26 @@ void fakechroot_init(void)
 {
 	struct fchr_wrapper *w;
 
-	dprintf("Fakechroot library initialization\nWrappers linked in:\n");
+	fakechroot_path = getenv("FAKECHROOT_BASE");
+	if (!fakechroot_path)
+		fchr_opts |= OPT_TRANSP;
+
+	fchr_parse_opts();
+	dprintf("Fakechroot library initialization\n");
+
+	if (fchr_opts & OPT_TRANSP) {
+		dprintf("Transparent operation mode\n");
+		/*return;*/
+	}
+
+	dprintf("Wrappers linked in:\n");
 
 	for (w = &__start_fchr_wrappers; w < &__stop_fchr_wrappers; w++) {
 		if (fchr_opts & OPT_LOAD_NOW)
 			w->nextfunc = dlsym(RTLD_NEXT, w->name);
 		dprintf("\t* %s [%p], next: %p\n", w->name, w->func, w->nextfunc);
 	}
-}
 
-void dummy()
-{
-	dprintf("3y3 4m t3h DUMMY wr4pp3r!\n");
+	cross_init();
 }
-
-DECLARE_WRAPPER(dummy);
 

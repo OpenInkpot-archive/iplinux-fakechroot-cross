@@ -30,21 +30,22 @@
 /* #include <dlfcn.h> */
 void *dlopen(const char *filename, int flag)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(filename));
-	expand_chroot_path(filename, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(filename,
 			fakechroot_buf);
 
 	if (!is_our_elf(filename)) {
 		char newpath[FAKECHROOT_MAXPATH];
 
 		narrow_chroot_path(filename, fakechroot_path, fakechroot_ptr);
-		cross_subst(newpath, filename, fakechroot_path);
+		cross_subst(newpath, filename);
 		dprintf("### dlopen()ing host %s\n", newpath);
 		return NEXTCALL(dlopen)(newpath, flag);
 	}
+
 	return NEXTCALL(dlopen)(filename, flag);
 }
 

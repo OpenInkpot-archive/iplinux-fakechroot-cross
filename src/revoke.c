@@ -31,10 +31,10 @@
 /* #include <unistd.h> */
 int revoke(const char *file)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(file, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(file, fakechroot_buf);
 
 	return NEXTCALL(revoke)(file);
 }

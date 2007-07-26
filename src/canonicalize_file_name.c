@@ -31,10 +31,10 @@
 /* #include <stdlib.h> */
 char *canonicalize_file_name(const char *name)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(name, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+	expand_chroot_path(name, fakechroot_buf);
 
 	return NEXTCALL(canonicalize_file_name)(name);
 }

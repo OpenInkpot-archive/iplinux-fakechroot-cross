@@ -30,10 +30,10 @@
 /* #include <stdlib.h> */
 char *mktemp(char *template)
 {
-	char *fakechroot_path, *fakechroot_ptr;
+	 
 	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
-	expand_chroot_path(template, fakechroot_path, fakechroot_ptr,
+	expand_chroot_path(template,
 			fakechroot_buf);
 
 	return NEXTCALL(mktemp)(template);
