@@ -33,7 +33,6 @@
 int ftw64 (const char *dir, int(*fn)(const char *file, const struct stat64 *sb, int flag), int nopenfd)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(dir);
 

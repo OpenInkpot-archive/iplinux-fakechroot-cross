@@ -37,7 +37,6 @@ FTS *fts_open(char * const *path_argv, int options,
 	char * const *p;
 	char **new_path_argv;
 	char **np;
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int n;
 
 	for (n=0, p=path_argv; *p; n++, p++);

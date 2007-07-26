@@ -33,7 +33,6 @@
 int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int ret;
 	char *linkpath;
 	struct stat statbuf;
@@ -47,7 +46,6 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
 	if (S_ISLNK(statbuf.st_mode)) {
 		 
-		char fakechroot_buf[FAKECHROOT_MAXPATH];
 		int i;
 
 		dprintf("### symlink\n");

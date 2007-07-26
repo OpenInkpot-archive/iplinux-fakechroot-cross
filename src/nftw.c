@@ -33,7 +33,6 @@ int nftw(const char *dir, int(*fn)(const char *file, const struct stat *sb,
 			int flag, struct FTW *s), int nopenfd, int flags)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(dir);
 

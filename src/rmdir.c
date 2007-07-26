@@ -31,7 +31,6 @@
 int rmdir(const char *pathname)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(pathname);
 

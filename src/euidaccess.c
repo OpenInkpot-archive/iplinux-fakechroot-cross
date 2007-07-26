@@ -32,7 +32,6 @@
 int euidaccess(const char *pathname, int mode)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(pathname);
 

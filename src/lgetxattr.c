@@ -32,7 +32,6 @@
 ssize_t lgetxattr(const char *path, const char *name, void *value, size_t size)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

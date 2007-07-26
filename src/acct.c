@@ -31,7 +31,6 @@
 int acct(const char *filename)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(filename);
 

@@ -32,7 +32,6 @@
 int chown(const char *path, uid_t owner, gid_t group)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	track_chown(path, owner, group);
 	expand_chroot_path(path);

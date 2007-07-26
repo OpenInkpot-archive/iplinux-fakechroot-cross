@@ -32,7 +32,6 @@
 int revoke(const char *file)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(file);
 

@@ -31,7 +31,6 @@
 char *mktemp(char *template)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(template);
 

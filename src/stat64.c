@@ -34,7 +34,6 @@
 int stat64 (const char *file_name, struct stat64 *buf)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(file_name);
 

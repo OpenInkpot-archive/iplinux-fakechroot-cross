@@ -34,7 +34,6 @@ int glob(const char *pattern, int flags, int(*errfunc) (const char *, int),
 	int rc, i;
 	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
 	char *fakechroot_ptr;
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(pattern);
 

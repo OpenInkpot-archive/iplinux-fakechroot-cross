@@ -32,7 +32,6 @@
 int utime(const char *filename, const struct utimbuf *buf)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(filename);
 

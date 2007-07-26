@@ -33,7 +33,6 @@ int mkstemp(char *template)
 	char tmp[FAKECHROOT_MAXPATH], *oldtemplate, *ptr;
 	int fd;
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	oldtemplate = template;
 

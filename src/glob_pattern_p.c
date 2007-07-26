@@ -32,7 +32,6 @@
 int glob_pattern_p(const char *pattern, int quote)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(pattern);
 

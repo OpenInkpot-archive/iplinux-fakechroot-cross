@@ -32,7 +32,6 @@ int link(const char *oldpath, const char *newpath)
 {
 	char tmp[FAKECHROOT_MAXPATH];
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(oldpath);
 

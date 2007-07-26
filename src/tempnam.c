@@ -31,7 +31,6 @@
 char *tempnam(const char *dir, const char *pfx)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(dir);
 

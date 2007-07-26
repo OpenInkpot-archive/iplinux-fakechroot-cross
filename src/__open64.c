@@ -31,7 +31,6 @@
 /* Internal libc function */
 int __open64 (const char *pathname, int flags, ...)
 {
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	int mode = 0;
 
 	expand_chroot_path(pathname);

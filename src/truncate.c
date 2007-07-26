@@ -32,7 +32,6 @@
 int truncate(const char *path, off_t length)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

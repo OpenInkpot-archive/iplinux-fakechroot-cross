@@ -33,7 +33,6 @@
 int creat(const char *pathname, mode_t mode)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(pathname);
 

@@ -33,7 +33,6 @@ ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 	int status;
 	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
 	char fakechroot_ptr;
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

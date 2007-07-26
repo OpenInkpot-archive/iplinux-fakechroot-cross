@@ -105,7 +105,6 @@ int execlp(const char *file, const char *arg, ...)
 	unsigned int i;
 	va_list args;
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("### %s\n", __FUNCTION__);
 
@@ -160,7 +159,6 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	unsigned int i, j, n;
 	char c;
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 	char cross_fn[FAKECHROOT_MAXPATH];
 	char *linkpath;
 	struct stat statbuf;
@@ -172,7 +170,6 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
 	if (S_ISLNK(statbuf.st_mode)) {
 		 
-		char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 		dprintf("### symlink\n");
 		linkpath = malloc(PATH_MAX);

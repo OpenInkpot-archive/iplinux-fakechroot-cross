@@ -32,7 +32,6 @@
 int lchown(const char *path, uid_t owner, gid_t group)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

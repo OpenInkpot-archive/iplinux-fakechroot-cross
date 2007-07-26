@@ -32,7 +32,6 @@
 /* #include <unistd.h> */
 int __xmknod(int ver, const char *path, mode_t mode, dev_t *dev)
 {
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	track_mknod(path, mode, *dev);
 	expand_chroot_path(path);

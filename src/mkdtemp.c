@@ -33,7 +33,6 @@ char *mkdtemp(char *template)
 {
 	char tmp[FAKECHROOT_MAXPATH], *oldtemplate, *ptr;
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	oldtemplate = template;
 

@@ -31,7 +31,6 @@
 FILE *freopen(const char *path, const char *mode, FILE *stream)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

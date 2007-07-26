@@ -31,7 +31,6 @@
 long pathconf(const char *path, int name)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

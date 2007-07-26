@@ -34,7 +34,6 @@ int scandir64 (const char *dir, struct dirent64 ***namelist,
 		int(*compar)(const void *, const void *))
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(dir);
 

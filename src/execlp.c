@@ -37,7 +37,6 @@ int execlp(const char *file, const char *arg, ...)
 	unsigned int i;
 	va_list args;
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	dprintf("### %s\n", __FUNCTION__);
 

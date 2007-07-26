@@ -32,7 +32,6 @@
 int removexattr(const char *path, const char *name)
 {
 	 
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(path);
 

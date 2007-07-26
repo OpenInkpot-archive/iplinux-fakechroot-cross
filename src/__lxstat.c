@@ -32,7 +32,6 @@
 /* #include <unistd.h> */
 int __lxstat(int ver, const char *filename, struct stat *buf)
 {
-	char fakechroot_buf[FAKECHROOT_MAXPATH];
 
 	expand_chroot_path(filename);
 
