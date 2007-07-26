@@ -5,7 +5,7 @@ AC_INIT([fakechroot-cross], [2.5], [virtuoso@slind.org])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
-AC_CONFIG_SRCDIR([src/libfakechroot.c])
+AC_CONFIG_SRCDIR([src/lib-main.c])
 AC_CONFIG_HEADER([config.h])
 AC_LANG_C
 

@@ -712,7 +712,7 @@ PACKAGE_VERSION='2.5'
 PACKAGE_STRING='fakechroot-cross 2.5'
 PACKAGE_BUGREPORT='virtuoso@slind.org'
 
-ac_unique_file="src/libfakechroot.c"
+ac_unique_file="src/lib-main.c"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>
