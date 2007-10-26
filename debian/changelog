@@ -1,3 +1,10 @@
+fakechroot-cross (2.5-3) unstable; urgency=low
+
+  * Entirely restructured fakechroot, introduced dynamic wrappers, broken-out
+    wrappers to one wrapper per one file.
+
+ -- Alexander Shishkin <virtuoso@slind.org>  Fri, 26 Oct 2007 14:27:31 +0400
+
 fakechroot-cross (2.5-2) unstable; urgency=low
 
   * Changed source name to 'fakechroot-cross'.
