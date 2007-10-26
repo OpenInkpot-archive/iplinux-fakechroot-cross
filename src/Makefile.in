@@ -65,10 +65,10 @@ am_libfakechroot_cross_la_OBJECTS = lib-main.lo lib-cross.lo util.lo \
 	creat.lo creat64.lo dlopen.lo fopen.lo fopen64.lo freopen.lo \
 	freopen64.lo getcwd.lo getwd.lo glob.lo lchown.lo link.lo \
 	mkdir.lo mkfifo.lo mkstemp.lo mkstemp64.lo mktemp.lo open.lo \
-	open64.lo pathconf.lo readlink.lo realpath.lo remove.lo \
-	rename.lo rmdir.lo symlink.lo tempnam.lo tmpnam.lo truncate.lo \
-	unlink.lo utime.lo utimes.lo execl.lo execle.lo execlp.lo \
-	execv.lo execve.lo execvp.lo get_current_dir_name.lo \
+	open64.lo opendir.lo pathconf.lo readlink.lo realpath.lo \
+	remove.lo rename.lo rmdir.lo symlink.lo tempnam.lo tmpnam.lo \
+	truncate.lo unlink.lo utime.lo utimes.lo execl.lo execle.lo \
+	execlp.lo execv.lo execve.lo execvp.lo get_current_dir_name.lo \
 	setxattr.lo scandir64.lo lchmod.lo ftw.lo __open64.lo \
 	__opendir2.lo revoke.lo mkdtemp.lo llistxattr.lo fts_open.lo \
 	__lxstat64.lo __xmknod.lo listxattr.lo _xftw64.lo glob64.lo \
@@ -230,6 +230,7 @@ libfakechroot_cross_la_SOURCES = \
 			    mktemp.c   \
 			    open.c     \
 			    open64.c   \
+			    opendir.c  \
 			    pathconf.c \
 			    readlink.c \
 			    realpath.c \
@@ -425,6 +426,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nftw64.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/open.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/open64.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opendir.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pathconf.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/readlink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/realpath.Plo@am__quote@

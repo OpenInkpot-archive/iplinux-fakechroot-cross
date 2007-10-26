@@ -30,6 +30,7 @@ libfakechroot_cross_la_SOURCES = \
 			    mktemp.c   \
 			    open.c     \
 			    open64.c   \
+			    opendir.c  \
 			    pathconf.c \
 			    readlink.c \
 			    realpath.c \
