@@ -1,3 +1,10 @@
+fakechroot-cross (2.5-4) unstable; urgency=low
+
+  * Call in-chroot binaries using in-chroot ld.so.
+  * Use new ld.so --argv0 functionality to supply correct argv.
+
+ -- Dmitry Eremin-Solenikov <dbaryshkov@slind.org>  Fri, 01 Feb 2008 17:52:29 +0300
+
 fakechroot-cross (2.5-3) unstable; urgency=low
 
   * Entirely restructured fakechroot, introduced dynamic wrappers, broken-out

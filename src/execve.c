@@ -29,6 +29,43 @@
 
 #ifdef HAVE_EXECVE
 
+static int execve_call(const char *filename, char *const argv [], char *const envp[])
+{
+	const char *linker = "/lib/ld-linux.so.2";
+	int i;
+
+	fprintf(stderr, "execve_call: %s\n", filename);
+	if (strstr(filename, "ldconfig")) {
+		filename = "/bin/true";
+	}
+	
+	if (!strstr(filename, linker)) {
+		char ** argv_new;
+
+		expand_chroot_path(linker);
+
+		for (i = 0; argv[i] != NULL; i++);
+		i++;
+		argv_new = calloc(i + 2, sizeof(char *));
+		for (; i >= 0; i--)
+			argv_new[i+2] = argv[i];
+	
+		argv_new[2] = filename;
+		argv_new[1] = "--argv0";
+		argv_new[0] = linker;
+
+		argv = argv_new;
+		filename = linker;
+	}
+
+	dprintf("execve_call: %s", filename);
+	for (i = 0; argv[i]; i++)
+		dprintf(" %s", argv[i]);
+	dprintf("\n");
+
+	return NEXTCALL(execve)(filename, argv, envp);
+}
+
 /* #include <unistd.h> */
 int execve(const char *filename, char *const argv [], char *const envp[])
 {
@@ -97,9 +134,9 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 			narrow_chroot_path(filename);
 			cross_subst(hashbang, filename);
 			dprintf("### executing host %s\n", hashbang);
-			return NEXTCALL(execve)(hashbang, argv, envp);
+			return execve_call(hashbang, argv, envp);
 		}
-		return NEXTCALL(execve)(filename, argv, envp);
+		return execve_call(filename, argv, envp);
 	}
 
 	hashbang[i] = hashbang[i+1] = 0;
@@ -145,10 +182,10 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 		narrow_chroot_path_modify(newfilename);
 		cross_subst(cross_fn, newfilename);
 		dprintf("### executing host %s\n", cross_fn);
-		return NEXTCALL(execve)(cross_fn, (char *const *)newargv, envp);
+		return execve_call(cross_fn, (char *const *)newargv, envp);
 	}
 
-	return NEXTCALL(execve)(newfilename, (char *const *)newargv, envp);
+	return execve_call(newfilename, (char *const *)newargv, envp);
 }
 
 DECLARE_WRAPPER(execve);

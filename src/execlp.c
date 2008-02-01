@@ -62,10 +62,11 @@ int execlp(const char *file, const char *arg, ...)
 	}
 	va_end(args);
 
-	expand_chroot_path(file);
+//	expand_chroot_path(file);
 	dprintf("%s: is_our_elf=%d\n", __FUNCTION__, is_our_elf(file));
 
-	return NEXTCALL(execvp)(file, (char *const *) argv);
+//	return NEXTCALL(execvp)(file, (char *const *) argv);
+	return execvp(file, (char *const *) argv);
 }
 
 DECLARE_WRAPPER(execlp);
