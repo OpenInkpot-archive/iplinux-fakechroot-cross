@@ -29,33 +29,33 @@
 
 #ifdef HAVE_EXECVE
 
+#define LINKER "/lib/ld-linux.so.2"
+
 static int execve_call(const char *filename, char *const argv [], char *const envp[])
 {
-	const char *linker = "/lib/ld-linux.so.2";
 	int i;
 
-	fprintf(stderr, "execve_call: %s\n", filename);
-	if (strstr(filename, "ldconfig")) {
-		filename = "/bin/true";
-	}
+	dprintf("execve_call_before: %s", filename);
+	for (i = 0; argv[i]; i++)
+		dprintf(" %s", argv[i]);
+	dprintf("\n");
 	
-	if (!strstr(filename, linker)) {
+	if (!strstr(filename, LINKER) && getenv("FAKECHROOT_BASE") != NULL) {
 		char ** argv_new;
-
-		expand_chroot_path(linker);
 
 		for (i = 0; argv[i] != NULL; i++);
 		i++;
-		argv_new = calloc(i + 2, sizeof(char *));
+		argv_new = calloc(i + 4, sizeof(char *));
 		for (; i >= 0; i--)
-			argv_new[i+2] = argv[i];
+			argv_new[i+3] = argv[i];
 	
 		argv_new[2] = filename;
 		argv_new[1] = "--argv0";
-		argv_new[0] = linker;
+		argv_new[0] = "ld.so";
 
 		argv = argv_new;
-		filename = linker;
+		filename = calloc(FAKECHROOT_MAXPATH+1, 1);
+		cross_subst(filename, LINKER);
 	}
 
 	dprintf("execve_call: %s", filename);
@@ -78,19 +78,20 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	char *ptr;
 	unsigned int i, j, n;
 	char c;
+	int ret;
 	 
 	char cross_fn[FAKECHROOT_MAXPATH];
 	char *linkpath;
 	struct stat statbuf;
 
 	WRAPPER_PROLOGUE();
+	dprintf("### %s %s\n", __FUNCTION__, filename);
 	expand_chroot_path(filename);
 
 	/* explicit symlink unwinding */
-	lstat(filename, &statbuf);
+	ret = lstat(filename, &statbuf);
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
-	if (S_ISLNK(statbuf.st_mode)) {
-		 
+	if (ret == 0 && S_ISLNK(statbuf.st_mode)) {
 
 		dprintf("### symlink\n");
 		linkpath = malloc(FAKECHROOT_MAXPATH);

@@ -42,7 +42,9 @@ int __xstat64 (int ver, const char *filename, struct stat64 *buf)
 
 	/* explicit symlink unwinding */
 	/* XXX: this is duplicate from execve() */
-	lstat(filename, &statbuf);
+	ret = lstat(filename, &statbuf);
+	if (ret < 0)
+		return ret;
 	dprintf("### filename=%s, mode: %06o\n", filename, statbuf.st_mode);
 	if (S_ISLNK(statbuf.st_mode)) {
 		 
