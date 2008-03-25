@@ -23,8 +23,7 @@ build-stamp: configure
 	$(MAKE)
 	touch $@
 
-install: build install-stamp
-install-stamp:
+install: build
 	dh_testdir
 	dh_testroot
 
