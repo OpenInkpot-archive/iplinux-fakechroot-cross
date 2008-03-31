@@ -1,3 +1,14 @@
+fakechroot-cross (2.5-5) unstable; urgency=low
+
+  * New version.
+
+  * [ Dmitry Baryshkov ]
+  * Use in-chroot ld.so for execing
+  * Fix few errors:
+  * Packaging fixes
+
+ -- Alexander Shishkin <virtuoso@slind.org>  Mon, 31 Mar 2008 15:24:12 +0400
+
 fakechroot-cross (2.5-4) unstable; urgency=low
 
   * Call in-chroot binaries using in-chroot ld.so.
