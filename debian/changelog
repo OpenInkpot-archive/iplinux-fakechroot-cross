@@ -1,3 +1,9 @@
+fakechroot-cross (2.5-6) unstable; urgency=low
+
+  * Added armel to the list of architectures and binaries in lib-cross.c.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 08 May 2008 02:16:25 +0700
+
 fakechroot-cross (2.5-5) unstable; urgency=low
 
   * New version.

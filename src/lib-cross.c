@@ -34,6 +34,8 @@ static int cross_arch_idx = -1;
 static struct magic_struct MAGIC[] = {
 	{ .arch = "arm",            .mach = EM_ARM  },
 	{ .arch = "uclibc-arm",     .mach = EM_ARM  },
+	{ .arch = "armel",          .mach = EM_ARM  },
+	{ .arch = "uclibc-armel",   .mach = EM_ARM  },
 	{ .arch = "powerpc",        .mach = EM_PPC  },
 	{ .arch = "uclibc-powerpc", .mach = EM_PPC  },
 	{ .arch = "mips",           .mach = EM_MIPS },
