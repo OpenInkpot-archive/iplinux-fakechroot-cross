@@ -1,12 +1,11 @@
 Source: fakechroot-cross
-Maintainer: Alexander Shishkin <virtuoso@slind.org>
-Section: host-tools
+Maintainer: Mikhail Gusarov <dottedmag@dottedmag.net>
+Section: host/tools
 Priority: optional
-Standards-Version: 3.6.2
-Build-Depends: libc6-dev
+Standards-Version: 3.8.0
+Build-Depends: libc6-dev, debhelper (>= 7)
 
 Package: libfakechroot-cross
-Section: host-tools
 Architecture: any
 Depends: ${fakechroot:Depends}
 Description: gives a fake chroot environment
