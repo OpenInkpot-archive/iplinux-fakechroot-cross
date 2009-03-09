@@ -27,6 +27,7 @@
 #include "wrapper.h"
 #include "proto.h"
 
+#ifdef HAVE_CREAT64
 /* #include <sys/types.h> */
 /* #include <sys/stat.h> */
 /* #include <fcntl.h> */
@@ -41,3 +42,4 @@ int creat64 (const char *pathname, mode_t mode)
 
 DECLARE_WRAPPER(creat64);
 
+#endif

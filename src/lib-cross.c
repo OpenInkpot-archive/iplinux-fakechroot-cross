@@ -82,7 +82,7 @@ void cross_init()
 	if (!fakechroot_cross) return;
 
 	/* read in cross architecture; void fakechroot_cross if unset */
-	cross_arch = getenv("CROSS_ARCH");
+	cross_arch = getenv("CROSS_SHELL_ARCH");
 	if (!cross_arch) {
 		dprintf("### no arch name defined\n");
 		goto failure;

@@ -27,6 +27,7 @@
 #include "wrapper.h"
 #include "proto.h"
 
+#ifdef HAVE_FOPEN64
 /* #include <stdio.h> */
 FILE *fopen64 (const char *path, const char *mode)
 {
@@ -39,3 +40,4 @@ FILE *fopen64 (const char *path, const char *mode)
 
 DECLARE_WRAPPER(fopen64);
 
+#endif

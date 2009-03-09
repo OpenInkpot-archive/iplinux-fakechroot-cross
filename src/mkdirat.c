@@ -1,8 +1,6 @@
-/* vi: set sw=4 ts=4: */
 /*
  * libfakechroot -- fake chroot environment
- * (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
- * (c) 2006, 2007 Alexander Shishkin <virtuoso@slind.org>
+ * (c) 2009 Mikhail Gusarov <dottedmag@dottedmag.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,27 +18,18 @@
  */
 
 /*
- * getwd() call wrapper
+ * mkdirat() call wrapper
  */
 
 #include "common.h"
 #include "wrapper.h"
 #include "proto.h"
 
-#ifdef HAVE_GETWD
-/* #include <unistd.h> */
-char *getwd(char *buf)
+#ifdef HAVE_MKDIRAT
+int mkdirat(int dirfd, const char *pathname, mode_t mode)
 {
-	char *cwd;
-	 
-
-	if ((cwd = NEXTCALL(getwd)(buf)) == NULL)
-		return NULL;
-
-	narrow_chroot_path(cwd);
-	return cwd;
+	expand_chroot_path(pathname);
+	return NEXTCALL(mkdirat)(dirfd, pathname, mode);
 }
-
-DECLARE_WRAPPER(getwd);
-
+DECLARE_WRAPPER(mkdirat);
 #endif

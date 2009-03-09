@@ -27,6 +27,7 @@
 #include "wrapper.h"
 #include "proto.h"
 
+#ifdef HAVE_FREOPEN64
 /* #include <stdio.h> */
 FILE *freopen64 (const char *path, const char *mode, FILE *stream)
 {
@@ -38,4 +39,5 @@ FILE *freopen64 (const char *path, const char *mode, FILE *stream)
 }
 
 DECLARE_WRAPPER(freopen64);
+#endif
 

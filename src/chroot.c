@@ -33,25 +33,65 @@ int chroot(const char *path)
 	char *ptr, *ld_library_path, *tmp;
 	int status, len;
 	char dir[FAKECHROOT_MAXPATH];
+    char cwd[FAKECHROOT_MAXPATH];
+    char full_path[FAKECHROOT_MAXPATH];
 	char *crossdir;
 #if !defined(HAVE_SETENV)
 	char *envbuf;
 #endif
+    struct stat sb;
 
-	dprintf("==== fake chroot() ====\n");
+    if (!path)
+    {
+        errno = EFAULT;
+        return -1;
+    }
+    if (!*path)
+    {
+        errno = ENOENT;
+        return -1;
+    }
+    if (*path != '/')
+    {
+        if(!getcwd(cwd, FAKECHROOT_MAXPATH))
+        {
+            errno = ENAMETOOLONG;
+            return -1;
+        }
+        if(!cwd)
+        {
+            errno = EFAULT;
+            return -1;
+        }
+        if(strcmp(cwd, "/") == 0)
+        {
+            snprintf(full_path, FAKECHROOT_MAXPATH, "/%s", path);
+        }
+        else
+        {
+            snprintf(full_path, FAKECHROOT_MAXPATH, "%s/%s", cwd, path);
+        }
+    }
+    else
+    {
+        snprintf(full_path, FAKECHROOT_MAXPATH, "%s", path);
+    }
 
-	/* Don't do nested chroots */
 	if (fakechroot_path != NULL)
-		return EFAULT;
-	dprintf("* fakechroot_path==NULL\n");
+        snprintf(dir, FAKECHROOT_MAXPATH, "%s%s", fakechroot_path, full_path);
+    else
+        snprintf(dir, FAKECHROOT_MAXPATH, "%s", full_path);
 
-	if ((status = chdir(path)) != 0)
-		return status;
-	dprintf("* chdir(%s)\n", path);
+#if defined(HAVE___XSTAT) && defined(_STAT_VER)
+    if ((status = NEXTCALL(__xstat)(_STAT_VER, dir, &sb)) != 0)
+        return status;
+#else
+    if ((status = next_stat(dir, &sb)) != 0)
+        return status;
+#endif
 
-	if (getcwd(dir, FAKECHROOT_MAXPATH) == NULL)
-		return EFAULT;
-	dprintf("* getcwd(%s)\n", path);
+    if ((sb.st_mode & S_IFMT) != S_IFDIR)
+        return ENOTDIR;
 
 	ptr = rindex(dir, 0);
 	if (ptr > dir) {

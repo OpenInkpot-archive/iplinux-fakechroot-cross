@@ -89,7 +89,17 @@ libfakechroot_cross_la_SOURCES = \
 			    getxattr.c \
 			    __xstat64.c \
 			    dlmopen.c \
-			    removexattr.c
+			    removexattr.c \
+			    __fxstatat.c \
+				__fxstatat64.c \
+				unlinkat.c \
+				renameat.c \
+				eaccess.c \
+				fchmodat.c \
+				fchownat.c \
+				openat.c \
+				openat64.c \
+				mkdirat.c
 
 libfakechroot_cross_la_LDFLAGS=-avoid-version
 

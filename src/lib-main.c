@@ -80,13 +80,13 @@ void fakechroot_init(void)
 
 	dprintf("Wrappers linked in:\n");
 
-	for (w = &__start_fchr_wrappers; w < &__stop_fchr_wrappers; w++) {
-		if (fchr_opts & OPT_LOAD_NOW)
-			w->nextfunc = dlsym(RTLD_NEXT, w->name);
+	/* for (w = &__start_fchr_wrappers; w < &__stop_fchr_wrappers; w++) { */
+	/* 	if (fchr_opts & OPT_LOAD_NOW) */
+	/* 		w->nextfunc = dlsym(RTLD_NEXT, w->name); */
 
-		if (fchr_opts & OPT_LIST_WRAPPERS)
-			dprintf("\t* %s [%p], next: %p\n", w->name, w->func, w->nextfunc);
-	}
+	/* 	if (fchr_opts & OPT_LIST_WRAPPERS) */
+	/* 		dprintf("\t* %s [%p], next: %p\n", w->name, w->func, w->nextfunc); */
+	/* } */
 
 	cross_init();
 }

@@ -29,7 +29,12 @@
 
 #ifdef HAVE_EXECVE
 
-#define LINKER "/lib/ld-linux.so.2"
+#if defined(__GLIBC__)
+#include <gnu/lib-names.h>
+#define LINKER "/lib/" LD_SO
+#else
+#error "Unable to detect runtime linker path"
+#endif
 
 static int execve_call(const char *filename, char *const argv [], char *const envp[])
 {

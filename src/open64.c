@@ -27,6 +27,7 @@
 #include "wrapper.h"
 #include "proto.h"
 
+#ifdef HAVE_OPEN64
 /* #include <sys/types.h> */
 /* #include <sys/stat.h> */
 /* #include <fcntl.h> */
@@ -49,3 +50,4 @@ int open64 (const char *pathname, int flags, ...)
 
 DECLARE_WRAPPER(open64);
 
+#endif

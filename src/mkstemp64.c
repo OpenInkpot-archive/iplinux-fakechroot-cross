@@ -27,6 +27,7 @@
 #include "wrapper.h"
 #include "proto.h"
 
+#ifdef HAVE_MKSTEMP64
 /* #include <stdlib.h> */
 int mkstemp64 (char *template)
 {
@@ -52,3 +53,4 @@ int mkstemp64 (char *template)
 
 DECLARE_WRAPPER(mkstemp64);
 
+#endif

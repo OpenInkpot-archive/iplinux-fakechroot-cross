@@ -28,7 +28,7 @@
 #include "proto.h"
 
 /* #include <unistd.h> */
-ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
+READLINK_TYPE_RETURN readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 {
 	int status;
 	char tmp[FAKECHROOT_MAXPATH], *tmpptr;
@@ -36,24 +36,30 @@ ssize_t readlink(const char *path, char *buf, READLINK_TYPE_ARG3)
 
 	expand_chroot_path(path);
 
-	if ((status = NEXTCALL(readlink)(path, tmp, bufsiz)) == -1)
+	if ((status = NEXTCALL(readlink)(path, tmp, FAKECHROOT_MAXPATH-1)) == -1)
 		return status;
 
-	/* TODO: shouldn't end with \000 */
 	tmp[status] = '\0';
 
 	if (fakechroot_path != NULL) {
 		fakechroot_ptr = strstr(tmp, fakechroot_path);
 		if (fakechroot_ptr != tmp)
 			tmpptr = tmp;
-		else
+		else {
 			tmpptr = tmp + strlen(fakechroot_path);
+            status -= strlen(fakechroot_path);
+        }
 
-		strcpy(buf, tmpptr);
-	} else
-		strcpy(buf, tmp);
+        if (strlen(tmpptr) > bufsiz) {
+            errno = EFAULT;
+            return -1;
+        }
+		strncpy(buf, tmpptr, status);
+	} else {
+		strncpy(buf, tmp, status);
+    }
 
-	return strlen(buf);
+	return status;
 }
 
 DECLARE_WRAPPER(readlink);

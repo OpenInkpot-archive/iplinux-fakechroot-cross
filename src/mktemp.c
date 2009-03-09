@@ -3,6 +3,7 @@
  * libfakechroot -- fake chroot environment
  * (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, LGPL
  * (c) 2006, 2007 Alexander Shishkin <virtuoso@slind.org>
+ * © 2009 Mikhail Gusarov <dottedmag@dottedmag.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,11 +31,21 @@
 /* #include <stdlib.h> */
 char *mktemp(char *template)
 {
-	 
+    char tmp[FAKECHROOT_MAXPATH], *oldtemplate, *ptr, *res;
 
+    oldtemplate = template;
 	expand_chroot_path(template);
 
-	return NEXTCALL(mktemp)(template);
+	if (NEXTCALL(mktemp)(template) == NULL)
+        return NULL;
+
+    ptr = tmp;
+    strcpy(ptr, template);
+    narrow_chroot_path(ptr);
+    if (ptr)
+        strcpy(oldtemplate, ptr);
+
+    return oldtemplate;
 }
 
 DECLARE_WRAPPER(mktemp);
