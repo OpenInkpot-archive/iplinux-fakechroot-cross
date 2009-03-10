@@ -1,3 +1,10 @@
+fakechroot-cross (2.8-2) asimov; urgency=low
+
+  * Re-added magic for armel, lost in OI->IP split.
+  * debhelper compatibility bumped to 7
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 10 Mar 2009 13:20:59 +0600
+
 fakechroot-cross (2.8-1) asimov; urgency=low
 
   * First build for IPlinux.
