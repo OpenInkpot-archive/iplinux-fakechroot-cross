@@ -136,7 +136,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 	}
 
 	if (hashbang[0] != '#' || hashbang[1] != '!') {
-		if (!is_our_elf(filename)) {
+		if (getenv("FAKECHROOT_BASE")) {
 			narrow_chroot_path(filename);
 			cross_subst(hashbang, filename);
 			dprintf("### executing host %s\n", hashbang);
@@ -182,9 +182,7 @@ int execve(const char *filename, char *const argv [], char *const envp[])
 
 	newargv[n] = 0;
 
-	if (!is_our_elf(newfilename)) {
-		 
-
+	if (getenv("FAKECHROOT_BASE")) {
 		narrow_chroot_path_modify(newfilename);
 		cross_subst(cross_fn, newfilename);
 		dprintf("### executing host %s\n", cross_fn);
