@@ -1,3 +1,10 @@
+fakechroot-cross (2.8-3) zelazny; urgency=low
+
+  * Fix handling of same-arch situation: do not rely on ELF magic, use
+    data recorded in chroot(2) handler instead.
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 30 Sep 2010 06:32:24 +0700
+
 fakechroot-cross (2.8-2) asimov; urgency=low
 
   * Re-added magic for armel, lost in OI->IP split.
